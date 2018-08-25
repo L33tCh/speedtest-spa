@@ -1,9 +1,11 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align: center">
-  <h1>Cape Connect 100 mbit fibre performance</h1>
+  <a href="https://www.home-connect.co.za/fibre-to-the-home/balwin-fibre/" target="_blank">
+    <h1>Home Connect 50 mbit fibre performance on Balwin Fibre</h1>
+  </a>
+  <h4>{{serverName}}</h4>
 </div>
-
-<div style="position: absolute; top:75px; left: 30px; right: 30px; bottom: 30px;">
+<div class="graph-view">
   <ngx-charts-line-chart
     [view]="view"
     [scheme]="colorScheme"
@@ -18,7 +20,18 @@
     [yAxisLabel]="yAxisLabel"
     [autoScale]="autoScale"
     [curve]="curve"
+    [yScaleMax]="yScaleMax"
     [timeline]="timeline">
 
   </ngx-charts-line-chart>
 </div>
+
+<div class="buttons">
+  <h4 class="button">Destination Filter</h4>
+  <button class="button" (click)="select('Cape Town')">Cape Town</button>
+  <button class="button" (click)="select('Johannesburg')">Johannesburg</button>
+  <button class="button" (click)="select('London')">London</button>
+  <button class="button" (click)="select('New York City NY')">New York</button>
+  <button class="button" (click)="select('Brisbane')">Brisbane</button>
+</div>
+

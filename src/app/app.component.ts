@@ -1,3 +1,4 @@
+import { Test } from './models/test';
 import { Component, OnInit } from '@angular/core';
 import { SpeedtestService } from './speedtest.service';
 import * as d3 from 'd3';
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit {
   showYAxisLabel = true;
   yAxisLabel = 'speed';
   curve = d3.curveCatmullRom.alpha(.5);
-  timeline = true
+  timeline = true;
 
   colorScheme = {
     domain: [
@@ -38,17 +39,27 @@ export class AppComponent implements OnInit {
 
   // line, area
   autoScale = true;
+  yScaleMax = 50;
+  serverName = 'Cape Town';
 
   constructor(private speedTestService: SpeedtestService) {}
 
   ngOnInit(): void {
-    this.speedTestService.getSpeedtests().then(data => this.test(data) );
+    this.speedTestService.getSpeedtests().then(data => {
+      this.speedTests = data;
+      this.test();
+    });
   }
 
-  test(data) {
-    this.speedTests = data;
+  filteredData() {
+    return this.speedTests.filter((test: Test) => {
+      return test.server_name === this.serverName;
+    });
+  }
 
-    for (const test of this.speedTests) {
+  test() {
+
+    for (const test of this.filteredData()) {
       const date = new Date(test.timestamp);
       const ping = {'value': test.ping, 'name': date};
       const download = {'value': test.download, 'name': date};
@@ -60,4 +71,12 @@ export class AppComponent implements OnInit {
     }
     this.chartData = [...this.chartData];
   }
+
+  select(server) {
+    this.serverName = server;
+    this.chartData = [{'name': 'Ping', 'series': []}, {'name': 'Download', 'series': []}, {'name': 'Upload', 'series': []}];
+    this.test();
+  }
+
 }
+
