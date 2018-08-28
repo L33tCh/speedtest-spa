@@ -2,6 +2,7 @@
   position: absolute;
   width:90px;
   left: 0px;
+  text-align: center;
 
   &:nth-child(1) { top:5px; }
   &:nth-child(2) { top:75px; }
@@ -10,11 +11,18 @@
   &:nth-child(5) { top:135px; }
   &:nth-child(6) { top:155px; }
   &:nth-child(7) { top:175px; }
-  &:nth-child(8) { top:250px; }
+  &:nth-child(8) { top:175px; }
+  &:nth-child(9) { top:250px; }
 
   .list {
     cursor: pointer;
-    border: 1px dashed #aaa;
+    border: 1px solid #aaa;
+    background: #fff;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 2px;
+    padding: 1px;
+    border-radius: 4px;
   }
 }
 

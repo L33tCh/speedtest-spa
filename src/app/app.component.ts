@@ -61,7 +61,10 @@ export class AppComponent implements OnInit {
       if (this.serverSponsor) {
         return test.server_id === this.serverSponsor.server_id;
       } else {
-        return test.server_name === this.serverName;
+        if (this.serverName === 'CT') {
+          return test.server_name === 'Cape Town';
+        }
+        return test.server_name === this.serverName && test.server_id !== 9682;
       }
     });
   }
