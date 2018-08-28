@@ -9,6 +9,13 @@
   &:nth-child(4) { top:115px; }
   &:nth-child(5) { top:135px; }
   &:nth-child(6) { top:155px; }
+  &:nth-child(7) { top:175px; }
+  &:nth-child(8) { top:250px; }
+
+  .list {
+    cursor: pointer;
+    border: 1px dashed #aaa;
+  }
 }
 
 .graph-view {

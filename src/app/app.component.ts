@@ -15,7 +15,11 @@ export class AppComponent implements OnInit {
   readonly upload = 2;
 
   private speedTests;
-  chartData: any[] = [{'name': 'Ping', 'series': []}, {'name': 'Download', 'series': []}, {'name': 'Upload', 'series': []}];
+  chartData: any[] = [
+    {'name': 'Ping', 'series': []},
+    {'name': 'Download', 'series': []},
+    {'name': 'Upload', 'series': []}
+  ];
 
   view: any[];
 
@@ -41,6 +45,7 @@ export class AppComponent implements OnInit {
   autoScale = true;
   yScaleMax = 50;
   serverName = 'Cape Town';
+  serverSponsor: Test = null;
 
   constructor(private speedTestService: SpeedtestService) {}
 
@@ -51,16 +56,19 @@ export class AppComponent implements OnInit {
     });
   }
 
-  filteredData() {
+  filteredData(): Test[] {
     return this.speedTests.filter((test: Test) => {
-      return test.server_name === this.serverName;
+      if (this.serverSponsor) {
+        return test.server_id === this.serverSponsor.server_id;
+      } else {
+        return test.server_name === this.serverName;
+      }
     });
   }
 
   test() {
-
     for (const test of this.filteredData()) {
-      const date = new Date(test.timestamp);
+      const date = new Date(test.api_timestamp.replace('SAST ', ''));
       const ping = {'value': test.ping, 'name': date};
       const download = {'value': test.download, 'name': date};
       const upload = {'value': test.upload, 'name': date};
@@ -73,10 +81,46 @@ export class AppComponent implements OnInit {
   }
 
   select(server) {
+    this.serverSponsor = null;
     this.serverName = server;
-    this.chartData = [{'name': 'Ping', 'series': []}, {'name': 'Download', 'series': []}, {'name': 'Upload', 'series': []}];
+    this.chartData = [
+      {'name': 'Ping', 'series': []},
+      {'name': 'Download', 'series': []},
+      {'name': 'Upload', 'series': []}
+    ];
     this.test();
   }
 
+  selectSponsor(test: Test) {
+    this.serverSponsor = test;
+    this.chartData = [
+      {'name': 'Ping', 'series': []},
+      {'name': 'Download', 'series': []},
+      {'name': 'Upload', 'series': []}
+    ];
+    this.test();
+  }
+
+  serverList() {
+    if (!this.speedTests) {
+      return;
+    }
+    const included = [];
+    const list: Test[] = [];
+    this.speedTests.forEach((test: Test) => {
+      if (!included.includes(test.sponsor)) {
+        list.push(test);
+        included.push(test.sponsor);
+      }
+    });
+    return list;
+  }
+
+  getName(test: Test): string {
+    return test.server_name + ': ' + test.sponsor;
+  }
+  log(e) {
+    console.log(e);
+  }
 }
 
